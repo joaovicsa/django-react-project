@@ -5,12 +5,12 @@ import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
 
 
-function ProtectedRoute(children) {
-    const [isAuthorized, setIsAuthorized] = useState(null)
+function ProtectedRoute({children}) {
+    const [isAuthorized, setIsAuthorized] = useState(null);
 
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))
-    }, []);
+    }, [])
 
     const refreshToken = async () => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
@@ -28,17 +28,17 @@ function ProtectedRoute(children) {
             console.log(error);
             setIsAuthorized(false);
         }
-    }
+    };
 
     const auth = async () => {
-        const token = localStorage.getItem(ACCESS_TOKEN)
+        const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) {
             setIsAuthorized(false);
-            return
+            return;
         }
-        const decoded = jwtDecode(token)
-        const tokenExpiration = decoded.exp
-        const now = Date.now() / 1000
+        const decoded = jwtDecode(token);
+        const tokenExpiration = decoded.exp;
+        const now = Date.now() / 1000;
 
         if (tokenExpiration < now) {
             await refreshToken();
