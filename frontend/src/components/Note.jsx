@@ -1,5 +1,5 @@
 /** @format */
-
+import '../styles/Note.css'
 import React from 'react'
 
 function Note({ note, onDelete }) {
